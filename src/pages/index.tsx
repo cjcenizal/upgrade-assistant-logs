@@ -141,7 +141,7 @@ const DeprecationLogTitle = ({ isFixed, level, title, category }) => (
         <EuiIconTip
           aria-label="Warning"
           type="alert"
-          color="warning"
+          color="danger"
           content="Recent logs contain deprecations"
         />
       )}
@@ -253,13 +253,13 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
 
 const SearchBar = () => {
   const levels = [
-    { name: CRITICAL, color: 'danger' },
-    { name: WARNING, color: 'warning' },
+    { name: CRITICAL, value: 'danger' },
+    { name: WARNING, value: 'warning' },
   ];
-  
+
   const categories = [
-    { name: 'Index access' },
-    { name: 'Something else' },
+    { name: 'Index access', value: 'a' },
+    { name: 'Something else', value: 'b' },
   ];
 
   const filters = [
@@ -339,7 +339,7 @@ export default () => (
               <EuiIconTip
                 aria-label="Warning"
                 type="alert"
-                color="warning"
+                color="danger"
                 content="2 hidden logs contain recent deprecations"
               />
             </EuiFlexItem>
