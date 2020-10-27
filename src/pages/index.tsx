@@ -13,6 +13,7 @@ import {
   EuiPageHeader,
   EuiPageHeaderSection,
   EuiText,
+  EuiButtonEmpty,
   EuiPanel,
   EuiTitle,
   EuiFlexGroup,
@@ -25,6 +26,7 @@ import {
   EuiIconTip,
   EuiDescriptionList,
   EuiBadge,
+  EuiSearchBar,
 } from '@elastic/eui';
 
 import {
@@ -53,24 +55,70 @@ const deprecations = [{
   title: 'Access system indices via specific APIs',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
+  isFixed: true,
+  level: WARNING,
+  category: 'Index access',
+  title: 'Access system indices via specific APIs',
+  message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
+}, {
   isFixed: false,
   level: CRITICAL,
   category: 'Index access',
   title: 'Access system indices via specific APIs',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
+}, {
+  isFixed: false,
+  level: CRITICAL,
+  category: 'Index access',
+  title: 'Access system indices via specific APIs',
+  message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
+}, {
+  isFixed: false,
+  level: CRITICAL,
+  category: 'Index access',
+  title: 'Access system indices via specific APIs',
+  message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
+}, {
+  isFixed: false,
+  level: WARNING,
+  category: 'Index access',
+  title: 'Access system indices via specific APIs',
+  message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
+}, {
+  isFixed: false,
+  level: WARNING,
+  category: 'Index access',
+  title: 'Access system indices via specific APIs',
+  message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }];
 
-const generateData = () => {
+const generateData = (isFixed) => {
   const data = [];
   const types = ['Deprecation', 'Success'];
   const days = 14;
 
   for (let day = 0; day < days; day++) {
+    const countA = Math.floor(Math.random() * 200);
+    const countB = Math.floor(Math.random() * 200);
+
+    let typeError;
+    let typeSuccess;
+
     types.forEach(type => {
-      const count = Math.floor(Math.random() * 200);
+      if (day === days - 1) {
+        typeError = countA + countB;
+        typeSuccess = 0;
+      } else if (isFixed && day === 0) {
+        typeError = 0;
+        typeSuccess = countA + countB;
+      } else {
+        typeError = countA;
+        typeSuccess = countB;
+      }
+
       data.unshift({
         x: moment().subtract(day, 'days').format('MMM DD'),
-        y: count,
+        y: type === 'Deprecation' ? typeError : typeSuccess,
         g: type,
       });
     });
@@ -117,10 +165,20 @@ const DeprecationLogTitle = ({ isFixed, level, title, category }) => (
   </EuiFlexGroup>
 );
 
-const DeprecationLogActions = () => <EuiLink>Hide</EuiLink>;
+const DeprecationLogActions = () => (
+  <EuiFlexGroup>
+    <EuiFlexItem grow={false}>
+      <EuiLink>View in&hellip;</EuiLink>
+    </EuiFlexItem>
+
+    <EuiFlexItem grow={false}>
+      <EuiLink>Hide</EuiLink>
+    </EuiFlexItem>
+  </EuiFlexGroup>
+);
 
 const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, message } }) => {
-  const data = generateData();
+  const data = generateData(isFixed);
 
   return (
     <EuiFlexItem>
@@ -153,11 +211,11 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
           <EuiDescriptionList
             listItems={[
               {
-                title: 'Latest occurrence',
+                title: 'Latest log',
                 description: (
                   <>
-                    {moment().format('MMMM Do YYYY, h:mm:ss a')}{' '}
-                    <EuiLink>View in Discover</EuiLink>
+                    {isFixed ? 'Success at' : 'Deprecation at'}{' '}{moment().format('MMMM Do YYYY, h:mm:ss a')}{' '}
+                    <EuiLink>View JSON</EuiLink>
                   </>
                 ),
               },
@@ -178,6 +236,65 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
         </EuiAccordion>
       </EuiPanel>
     </EuiFlexItem>
+  );
+};
+
+const SearchBar = () => {
+  const levels = [
+    { name: CRITICAL, color: 'danger' },
+    { name: WARNING, color: 'warning' },
+  ];
+
+  const filters = [
+    {
+      type: 'field_value_toggle_group',
+      field: 'status',
+      items: [
+        {
+          value: 'success',
+          name: 'Success',
+        },
+        {
+          value: 'deprecation',
+          name: 'Deprecation',
+        },
+      ],
+    },
+    // {
+    //   type: 'is',
+    //   field: 'fixed',
+    //   name: 'Fixed',
+    //   negatedName: 'Inactive',
+    // },
+    // {
+    //   type: 'field_value_toggle',
+    //   name: 'Mine',
+    //   field: 'owner',
+    //   value: 'dewey',
+    // },
+    // {
+    //   type: 'field_value_toggle',
+    //   name: 'Popular',
+    //   field: 'followers',
+    //   value: 5,
+    //   operator: 'gt',
+    // },
+    {
+      type: 'field_value_selection',
+      field: 'level',
+      name: 'Level',
+      multiSelect: 'or',
+      operator: 'exact',
+      options: levels,
+    },
+  ];
+
+  return (
+    <EuiSearchBar
+      defaultQuery={''}
+      filters={filters}
+      onChange={() => {}}
+    />
   );
 };
 
@@ -203,13 +320,21 @@ export default () => (
             </EuiFlexItem>
 
             <EuiFlexItem grow={false}>
-              4 hidden
+              <EuiButtonEmpty
+                onClick={() => {}}
+                iconType="arrowDown"
+                iconSide="right"
+              >
+                4 hidden
+              </EuiButtonEmpty>
             </EuiFlexItem>
           </EuiFlexGroup>
         </EuiPageHeaderSection>
       </EuiPageHeader>
 
-      <EuiSpacer size="s" />
+      <SearchBar />
+
+      <EuiSpacer size="m" />
 
       <EuiFlexGroup direction="column" gutterSize="xs">
         {deprecations.map((deprecation, index) => <DeprecationLog key={index} id={index} deprecation={deprecation} />)}
