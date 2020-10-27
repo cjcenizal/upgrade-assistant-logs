@@ -26,7 +26,7 @@ import {
   EuiIconTip,
   EuiDescriptionList,
   EuiBadge,
-  EuiSearchBar,
+  // EuiSearchBar,
 } from '@elastic/eui';
 
 import {
@@ -239,64 +239,64 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
   );
 };
 
-const SearchBar = () => {
-  const levels = [
-    { name: CRITICAL, color: 'danger' },
-    { name: WARNING, color: 'warning' },
-  ];
+// const SearchBar = () => {
+//   const levels = [
+//     { name: CRITICAL, color: 'danger' },
+//     { name: WARNING, color: 'warning' },
+//   ];
 
-  const filters = [
-    {
-      type: 'field_value_toggle_group',
-      field: 'status',
-      items: [
-        {
-          value: 'success',
-          name: 'Success',
-        },
-        {
-          value: 'deprecation',
-          name: 'Deprecation',
-        },
-      ],
-    },
-    // {
-    //   type: 'is',
-    //   field: 'fixed',
-    //   name: 'Fixed',
-    //   negatedName: 'Inactive',
-    // },
-    // {
-    //   type: 'field_value_toggle',
-    //   name: 'Mine',
-    //   field: 'owner',
-    //   value: 'dewey',
-    // },
-    // {
-    //   type: 'field_value_toggle',
-    //   name: 'Popular',
-    //   field: 'followers',
-    //   value: 5,
-    //   operator: 'gt',
-    // },
-    {
-      type: 'field_value_selection',
-      field: 'level',
-      name: 'Level',
-      multiSelect: 'or',
-      operator: 'exact',
-      options: levels,
-    },
-  ];
+//   const filters = [
+//     {
+//       type: 'field_value_toggle_group',
+//       field: 'status',
+//       items: [
+//         {
+//           value: 'success',
+//           name: 'Success',
+//         },
+//         {
+//           value: 'deprecation',
+//           name: 'Deprecation',
+//         },
+//       ],
+//     },
+//     // {
+//     //   type: 'is',
+//     //   field: 'fixed',
+//     //   name: 'Fixed',
+//     //   negatedName: 'Inactive',
+//     // },
+//     // {
+//     //   type: 'field_value_toggle',
+//     //   name: 'Mine',
+//     //   field: 'owner',
+//     //   value: 'dewey',
+//     // },
+//     // {
+//     //   type: 'field_value_toggle',
+//     //   name: 'Popular',
+//     //   field: 'followers',
+//     //   value: 5,
+//     //   operator: 'gt',
+//     // },
+//     {
+//       type: 'field_value_selection',
+//       field: 'level',
+//       name: 'Level',
+//       multiSelect: 'or',
+//       operator: 'exact',
+//       options: levels,
+//     },
+//   ];
 
-  return (
-    <EuiSearchBar
-      defaultQuery={''}
-      filters={filters}
-      onChange={() => {}}
-    />
-  );
-};
+//   return (
+//     <EuiSearchBar
+//       defaultQuery={''}
+//       filters={filters}
+//       onChange={() => {}}
+//     />
+//   );
+// };
 
 export default () => (
   <EuiPage restrictWidth>
@@ -331,8 +331,6 @@ export default () => (
           </EuiFlexGroup>
         </EuiPageHeaderSection>
       </EuiPageHeader>
-
-      <SearchBar />
 
       <EuiSpacer size="m" />
 
