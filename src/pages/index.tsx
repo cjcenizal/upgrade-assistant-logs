@@ -26,7 +26,7 @@ import {
   EuiIconTip,
   EuiDescriptionList,
   EuiBadge,
-  // EuiSearchBar,
+  EuiSearchBar,
 } from '@elastic/eui';
 
 import {
@@ -166,9 +166,21 @@ const DeprecationLogTitle = ({ isFixed, level, title, category }) => (
 );
 
 const DeprecationLogActions = () => (
-  <EuiFlexGroup>
+  <EuiFlexGroup alignItems="baseline">
     <EuiFlexItem grow={false}>
       <EuiLink>View in&hellip;</EuiLink>
+    </EuiFlexItem>
+
+    <EuiFlexItem grow={false}>
+      <EuiLink>Clients</EuiLink>
+    </EuiFlexItem>
+
+    <EuiFlexItem grow={false}>
+      <EuiLink external={true} href="#">Docs</EuiLink>
+    </EuiFlexItem>
+
+    <EuiFlexItem grow={false}>
+      <EuiLink>Test</EuiLink>
     </EuiFlexItem>
 
     <EuiFlexItem grow={false}>
@@ -211,23 +223,23 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
           <EuiDescriptionList
             listItems={[
               {
-                title: 'Latest log',
+                title: `${category}: ${title}`,
+                description: message,
+              },
+              {
+                title: isFixed ? 'This appears to have been addressed' : 'Deprecated features appear to be in use',
                 description: (
                   <>
-                    {isFixed ? 'Success at' : 'Deprecation at'}{' '}{moment().format('MMMM Do YYYY, h:mm:ss a')}{' '}
+                    Latest log {isFixed ? 'was successful at' : 'showed a deprecation at'}{' '}{moment().format('MMMM Do YYYY, h:mm:ss a')}{' '}
                     <EuiLink>View JSON</EuiLink>
                   </>
                 ),
               },
               {
-                title: 'Message',
-                description: message,
-              },
-              {
                 title: 'Solution',
                 description: (
                   <>
-                    <EuiLink external>Read the "Changes to system indices" docs</EuiLink>
+                    <EuiLink external={true} href="#">Read the "Changes to system indices" docs</EuiLink>
                   </>
                 ),
               },
@@ -239,64 +251,77 @@ const DeprecationLog = ({ id, deprecation: { isFixed, level, title, category, me
   );
 };
 
-// const SearchBar = () => {
-//   const levels = [
-//     { name: CRITICAL, color: 'danger' },
-//     { name: WARNING, color: 'warning' },
-//   ];
+const SearchBar = () => {
+  const levels = [
+    { name: CRITICAL, color: 'danger' },
+    { name: WARNING, color: 'warning' },
+  ];
+  
+  const categories = [
+    { name: 'Index access' },
+    { name: 'Something else' },
+  ];
 
-//   const filters = [
-//     {
-//       type: 'field_value_toggle_group',
-//       field: 'status',
-//       items: [
-//         {
-//           value: 'success',
-//           name: 'Success',
-//         },
-//         {
-//           value: 'deprecation',
-//           name: 'Deprecation',
-//         },
-//       ],
-//     },
-//     // {
-//     //   type: 'is',
-//     //   field: 'fixed',
-//     //   name: 'Fixed',
-//     //   negatedName: 'Inactive',
-//     // },
-//     // {
-//     //   type: 'field_value_toggle',
-//     //   name: 'Mine',
-//     //   field: 'owner',
-//     //   value: 'dewey',
-//     // },
-//     // {
-//     //   type: 'field_value_toggle',
-//     //   name: 'Popular',
-//     //   field: 'followers',
-//     //   value: 5,
-//     //   operator: 'gt',
-//     // },
-//     {
-//       type: 'field_value_selection',
-//       field: 'level',
-//       name: 'Level',
-//       multiSelect: 'or',
-//       operator: 'exact',
-//       options: levels,
-//     },
-//   ];
+  const filters = [
+    {
+      type: 'field_value_toggle_group',
+      field: 'status',
+      items: [
+        {
+          value: 'success',
+          name: 'Success',
+        },
+        {
+          value: 'deprecation',
+          name: 'Deprecation',
+        },
+      ],
+    },
+    // {
+    //   type: 'is',
+    //   field: 'fixed',
+    //   name: 'Fixed',
+    //   negatedName: 'Inactive',
+    // },
+    // {
+    //   type: 'field_value_toggle',
+    //   name: 'Mine',
+    //   field: 'owner',
+    //   value: 'dewey',
+    // },
+    // {
+    //   type: 'field_value_toggle',
+    //   name: 'Popular',
+    //   field: 'followers',
+    //   value: 5,
+    //   operator: 'gt',
+    // },
+    {
+      type: 'field_value_selection',
+      field: 'category',
+      name: 'Category',
+      multiSelect: 'or',
+      operator: 'exact',
+      options: categories,
+    },
+    {
+      type: 'field_value_selection',
+      field: 'level',
+      name: 'Level',
+      multiSelect: 'or',
+      operator: 'exact',
+      options: levels,
+    },
+  ];
 
-//   return (
-//     <EuiSearchBar
-//       defaultQuery={''}
-//       filters={filters}
-//       onChange={() => {}}
-//     />
-//   );
-// };
+  return (
+    <EuiSearchBar
+      defaultQuery={''}
+      filters={filters}
+      onChange={() => {}}
+    />
+  );
+};
 
 export default () => (
   <EuiPage restrictWidth>
@@ -331,6 +356,8 @@ export default () => (
           </EuiFlexGroup>
         </EuiPageHeaderSection>
       </EuiPageHeader>
+
+      <SearchBar />
 
       <EuiSpacer size="m" />
 
