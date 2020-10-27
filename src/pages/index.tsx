@@ -58,37 +58,37 @@ const deprecations = [{
   isFixed: true,
   level: WARNING,
   category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  title: 'Some other index-related deprecation',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
   isFixed: false,
   level: CRITICAL,
-  category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  category: 'Another category',
+  title: 'Another API is being used in a deprecated manner',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
   isFixed: false,
   level: CRITICAL,
-  category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  category: 'Another category',
+  title: 'Looks like something else is wrong',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
   isFixed: false,
   level: CRITICAL,
-  category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  category: 'Sandwiches',
+  title: 'The sandwich API no longer supports rye',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
   isFixed: false,
   level: WARNING,
-  category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  category: 'Carbonation',
+  title: 'Carbonate drinks with the Fizzy API, not the CO2 API',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }, {
   isFixed: false,
   level: WARNING,
-  category: 'Index access',
-  title: 'Access system indices via specific APIs',
+  category: 'Carbonation',
+  title: 'flat: true is no longer a supported config',
   message: 'This request accesses system indices: [.apm-agent-configuration, .apm-custom-link, .kibana_1, .kibana_task_manager_1, .security-7], but in a future major version, direct access to system indices will be prevented by default',
 }];
 
@@ -160,7 +160,7 @@ const DeprecationLogTitle = ({ isFixed, level, title, category }) => (
     </EuiFlexItem>
 
     <EuiFlexItem grow={false}>
-      {title}
+      <div>{title}</div>
     </EuiFlexItem>
   </EuiFlexGroup>
 );
